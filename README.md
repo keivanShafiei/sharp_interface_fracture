@@ -127,19 +127,6 @@ make -j4
 bash reproduce_all_results.sh
 ```
 
-See `VERIFICATION.md` for pass/fail criteria for each benchmark.
-
----
-
-## Known Limitations Before Publication
-
-See `LIMITATIONS.md` for a complete list. Critical items:
-
-1. The elasticity tensor in `config_force.cpp` uses non-standard parameterization that differs from `material.hpp` by ~1.6% for ν=0.20.
-2. Backtracking in `propagate_with_backtracking()` uses a **linear energy approximation** rather than a full FEM re-solve.
-3. The Double-Notch benchmark is specified in the paper but not yet implemented in code.
-4. OpenMP parallelization of Phase 2 (configurational force evaluation) is declared in the paper but not implemented.
-5. The speedup comparison requires a phase-field reference implementation not included here.
 
 ---
 

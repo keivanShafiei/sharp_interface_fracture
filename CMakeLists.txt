@@ -19,14 +19,8 @@ set(CMAKE_CXX_FLAGS_DEBUG   "-O0 -g -Wall -Wextra")
 # ============================================================================
 
 # PETSc (required for linear system solver)
-find_package(PETSc REQUIRED)
-# If PETSc not found via cmake module, try pkg-config:
-if(NOT PETSc_FOUND)
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(PETSC REQUIRED petsc)
-    set(PETSC_INCLUDES ${PETSC_INCLUDE_DIRS})
-    set(PETSC_LIBRARIES ${PETSC_LINK_LIBRARIES})
-endif()
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(PETSC REQUIRED petsc)
 
 # Eigen3 (header-only, required for matrix operations)
 find_package(Eigen3 3.3 REQUIRED NO_MODULE)
@@ -53,7 +47,7 @@ add_executable(sharp_fracture ${SOURCES})
 
 target_include_directories(sharp_fracture PRIVATE
     include
-    ${PETSC_INCLUDES}
+    ${PETSC_INCLUDE_DIRS}
 )
 
 target_link_libraries(sharp_fracture PRIVATE
@@ -62,6 +56,8 @@ target_link_libraries(sharp_fracture PRIVATE
     CGAL::CGAL
     CGAL::CGAL_Core
 )
+
+target_compile_options(sharp_fracture PRIVATE ${PETSC_CFLAGS_OTHER})
 
 # ============================================================================
 # Tests
@@ -80,9 +76,10 @@ add_executable(test_patch_test
     src/vtk.cpp
     src/simulation_config.cpp
 )
-target_include_directories(test_patch_test PRIVATE include ${PETSC_INCLUDES})
+target_include_directories(test_patch_test PRIVATE include ${PETSC_INCLUDE_DIRS})
 target_link_libraries(test_patch_test PRIVATE
     ${PETSC_LIBRARIES} Eigen3::Eigen CGAL::CGAL CGAL::CGAL_Core)
+target_compile_options(test_patch_test PRIVATE ${PETSC_CFLAGS_OTHER})
 add_test(NAME PatchTest COMMAND test_patch_test)
 
 # Test 2: Elasticity tensor consistency
@@ -91,9 +88,10 @@ add_executable(test_elasticity
     src/config_force.cpp
     src/mesh.cpp
 )
-target_include_directories(test_elasticity PRIVATE include ${PETSC_INCLUDES})
+target_include_directories(test_elasticity PRIVATE include ${PETSC_INCLUDE_DIRS})
 target_link_libraries(test_elasticity PRIVATE
     ${PETSC_LIBRARIES} Eigen3::Eigen CGAL::CGAL CGAL::CGAL_Core)
+target_compile_options(test_elasticity PRIVATE ${PETSC_CFLAGS_OTHER})
 add_test(NAME ElasticityConsistency COMMAND test_elasticity)
 
 # ============================================================================

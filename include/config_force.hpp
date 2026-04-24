@@ -84,6 +84,12 @@ public:
         const Mesh& mesh,
         const std::vector<double>& displacement) const;
 
+    /**
+     * @brief Get elasticity tensor (for testing only)
+     * @return Reference to 3×3 elasticity matrix in Voigt notation
+     */
+    const Eigen::Matrix3d& get_elasticity_tensor() const { return C_; }
+
 private:
     // Material properties (Table 1)
     double E_;           // Young's modulus

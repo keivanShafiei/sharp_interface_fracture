@@ -17,14 +17,6 @@
 #include <cmath>
 #include <Eigen/Dense>
 
-// Helper: expose C_ via a subclass (for testing only)
-class ConfigForceTest : public ConfigurationalForce {
-public:
-    ConfigForceTest(double E, double nu, bool ps)
-        : ConfigurationalForce(E, nu, ps) {}
-    const Eigen::Matrix3d& get_C() const { return C_; }
-};
-
 static bool nearly_equal(double a, double b, double tol=1e-8) {
     const double denom = std::max(std::abs(b), 1e-15);
     return std::abs(a-b)/denom < tol;
@@ -73,8 +65,8 @@ int main()
     }
 
     // ConfigurationalForce tensor (FIXED)
-    ConfigForceTest cft(E, nu, true);
-    const auto& C = cft.get_C();
+    ConfigurationalForce cf(E, nu, true);
+    const auto& C = cf.get_elasticity_tensor();
 
     const double C11_cf = C(0,0);
     const double C12_cf = C(0,1);
@@ -124,8 +116,8 @@ int main()
         const double mu2    = E / (2.0*(1.0+nu2));
         const double C11_a2 = lam2 + 2.0*mu2;
 
-        ConfigForceTest cft2(E, nu2, true);
-        const double C11_c2 = cft2.get_C()(0,0);
+        ConfigurationalForce cf2(E, nu2, true);
+        const double C11_c2 = cf2.get_elasticity_tensor()(0,0);
         const double err2   = 100*std::abs(C11_c2-C11_a2)/C11_a2;
         bool p2 = nearly_equal(C11_c2, C11_a2);
         std::cout << "  C11(nu=0.40): material=" << C11_a2/1e9

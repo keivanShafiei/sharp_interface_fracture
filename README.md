@@ -1,7 +1,7 @@
 # Sharp-Interface Variational Fracture Mechanics
 ## A Mesh-Conforming Finite Element Method Based on Configurational Forces
 
-**Journal:** International Journal for Numerical Methods in Engineering  
+**Journal:**   
 **Status:** Preprint / Under Review  
 
 ---

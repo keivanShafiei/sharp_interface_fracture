@@ -133,11 +133,5 @@ bash reproduce_all_results.sh
 ## Citation
 
 ```bibtex
-@article{SharpInterface2024,
-  title   = {Sharp-Interface Variational Fracture Mechanics: A Mesh-Conforming 
-             Finite Element Method Based on Configurational Forces},
-  journal = {International Journal for Numerical Methods in Engineering},
-  year    = {2024},
-  doi     = {10.1002/0000}
-}
+
 ```
